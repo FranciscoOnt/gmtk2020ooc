@@ -12,7 +12,6 @@ public class Tree : MonoBehaviour
     public Vector2 burnRateRange = new Vector2(0f, 1f);
     public Vector2 igniteRateRange = new Vector2(0f, 1f);
     public float burnMax = 149f;
-    private float burnAmount = 0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,13 +32,13 @@ public class Tree : MonoBehaviour
 
         }
 
-        if (fireRate % 25f == 0f)
+        if (burning && fireRate % 25f == 0f)
         {
             Collider2D[] burnarea = Physics2D.OverlapCircleAll(transform.position, 3f);
             foreach (Collider2D c in burnarea)
             {
                 if (c.transform != transform)
-                    c.SendMessage("Ignite");
+                    c.SendMessage("Ignite", SendMessageOptions.DontRequireReceiver);
             }
         }
 
@@ -53,8 +52,8 @@ public class Tree : MonoBehaviour
         if (burning)
             return;
         burning = true;
-        burnRate = Random.Range(.8f, 5f);
-        fireRate = Random.Range(20f, 40f);
+        burnRate = Random.Range(burnRateRange.x, burnRateRange.y);
+        fireRate = Random.Range(igniteRateRange.x, igniteRateRange.y);
     }
 
     public void Water()

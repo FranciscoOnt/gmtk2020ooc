@@ -48,11 +48,23 @@ public class Water : MonoBehaviour
         if (other.transform.CompareTag("Tree"))
         {
             other.transform.GetComponent<Tree>().Water();
-            velocity = Vector3.zero;
-            lifetime = 2f;
-            drop.enabled = false;
-            splash.Play();
-            Destroy(gameObject, .3f);
+            Splash();
         }
+
+        if (other.transform.CompareTag("Zombi"))
+        {
+            other.transform.GetComponent<Zombi>().Water();
+            Splash(false);
+        }
+    }
+
+    private void Splash(bool stop = true)
+    {
+        if (!stop)
+            velocity = Vector3.zero;
+        lifetime = 2f;
+        drop.enabled = false;
+        splash.Play();
+        Destroy(gameObject, .3f);
     }
 }

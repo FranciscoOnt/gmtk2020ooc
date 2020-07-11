@@ -9,9 +9,9 @@ public class PlayerController : MonoBehaviour
     public CrossHair waterOrigin;
     public float moveSpeed = 5f;
     public float waterDelay = .2f;
-    private float waterTimer = 0f;
     public float waterConsumptionRate = .2f;
     public Transform water;
+    public Transform axe;
     private Vector2 velocity;
     private bool isShotingWater = false;
     private Rigidbody2D rb;
@@ -20,11 +20,19 @@ public class PlayerController : MonoBehaviour
     public float flinchDelay = .5f;
     public float flinchMultiply = 5f;
     private bool flinching = false;
+    private bool attacking = false;
+
+    private Transform axeAttack;
 
     void FixedUpdate()
     {
         if (!flinching)
-            rb.velocity = velocity * moveSpeed;
+        {
+            if (attacking)
+                rb.velocity = Vector3.zero;
+            else
+                rb.velocity = velocity * moveSpeed;
+        }
     }
 
     private void Awake()
@@ -52,6 +60,8 @@ public class PlayerController : MonoBehaviour
     {
         if (waterTank > 0)
         {
+            if (attacking)
+                return;
             waterTank -= waterConsumptionRate;
             Transform drop = Instantiate(water, waterOrigin.transform.position, Quaternion.identity);
             drop.GetComponent<Water>().SetVelocity(crossHair.GetCrosshaiPosition() - transform.position);
@@ -60,6 +70,23 @@ public class PlayerController : MonoBehaviour
         {
             waterTank = 0f;
         }
+    }
+
+    public void AxeAttack()
+    {
+        if (attacking)
+            return;
+        attacking = true;
+        axeAttack = Instantiate(axe, transform.position, Quaternion.identity);
+        axeAttack.GetComponentInChildren<Axe>().SetController(this);
+        RotateAxe();
+    }
+
+    public void FinishAttack()
+    {
+        attacking = false;
+        Destroy(axeAttack.gameObject);
+        axeAttack = null;
     }
 
     public void getWater(float amount)
@@ -114,5 +141,19 @@ public class PlayerController : MonoBehaviour
     public void Damage()
     {
         life--;
+    }
+
+    // Credits to Kastenessen from https://answers.unity.com/questions/1350050/how-do-i-rotate-a-2d-object-to-face-another-object.html
+    private void RotateAxe()
+    {
+        Vector3 targ = transform.position;
+        targ.z = 0f;
+
+        Vector3 objectPos = crossHair.transform.position;
+        targ.x = targ.x - objectPos.x;
+        targ.y = targ.y - objectPos.y;
+
+        float angle = Mathf.Atan2(targ.y, targ.x) * Mathf.Rad2Deg;
+        axeAttack.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle + 90));
     }
 }

@@ -24,6 +24,11 @@ public class InputWrapper : MonoBehaviour
         else if (c.canceled) controller.SetWaterState(false);
     }
 
+    public void UpdateMouseRClick(InputAction.CallbackContext c)
+    {
+        if (c.started) controller.AxeAttack();
+    }
+
     public void UpdateCrosshairPosition(InputAction.CallbackContext c)
     {
         controller.SetCrosshairPosition(c.ReadValue<Vector2>());
