@@ -23,6 +23,10 @@ public class Zombi : MonoBehaviour
     private float maxLife = 50f;
     public float flinchTime = 1f;
     private bool flinching = false;
+    public ParticleSystem bleedEffect;
+    private bool dead = false;
+    public Transform waterDrop;
+    public Transform spriteBody;
 
     private void Awake()
     {
@@ -70,9 +74,13 @@ public class Zombi : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 direction = Vector3.Normalize(player.position - transform.position);
-        if (flinching)
+        if (flinching || dead)
             direction = Vector3.zero;
         rb.velocity = direction * walkingSpeed;
+        if (rb.velocity.x < 0f)
+            spriteBody.localScale = new Vector3(-1f, 1f, 1f);
+        else
+            spriteBody.localScale = new Vector3(1f, 1f, 1f);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -119,18 +127,38 @@ public class Zombi : MonoBehaviour
             burning = false;
         }
         life--;
+        if (life <= 0f)
+            Death();
     }
 
     public void AxeHit()
     {
         StartCoroutine("Flinch");
         life -= axePower;
+        if (life <= 0f)
+            Death();
     }
 
     public IEnumerator Flinch()
     {
+        Animator anim = spriteBody.GetComponent<Animator>();
+        bleedEffect.Play();
+        anim.enabled = false;
         flinching = true;
         yield return new WaitForSeconds(flinchTime);
         flinching = false;
+        anim.enabled = true;
+    }
+
+    private void Death()
+    {
+        if (dead)
+            return;
+        dead = true;
+        spriteBody.gameObject.SetActive(false);
+        flinching = true;
+        bleedEffect.Play();
+        Transform w = Instantiate(waterDrop, transform.position, Quaternion.identity);
+        Destroy(gameObject, .4f);
     }
 }

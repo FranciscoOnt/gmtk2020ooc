@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     public float flinchMultiply = 5f;
     private bool flinching = false;
     private bool attacking = false;
+    public Animator anim;
+    public Transform spriteBody;
 
     private Transform axeAttack;
 
@@ -28,11 +30,20 @@ public class PlayerController : MonoBehaviour
     {
         if (!flinching)
         {
-            if (attacking)
+            if (attacking) {
                 rb.velocity = Vector3.zero;
-            else
+                anim.SetBool("Walking", false);
+            }
+            else{
                 rb.velocity = velocity * moveSpeed;
+                anim.SetBool("Walking", velocity == Vector2.zero);
+            }
         }
+
+        if (crossHair.transform.position.x > transform.position.x)
+            spriteBody.localScale = new Vector3(-1f, 1f, 1f);
+        else
+            spriteBody.localScale = new Vector3(1f, 1f, 1f);
     }
 
     private void Awake()
