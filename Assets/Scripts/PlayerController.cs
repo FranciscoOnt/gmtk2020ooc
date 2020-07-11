@@ -6,27 +6,39 @@ public class PlayerController : MonoBehaviour
 {
 
     public CrossHair crossHair;
+    public CrossHair waterOrigin;
     public float moveSpeed = 5f;
+    public float waterDelay = .2f;
+    private float waterTimer = 0f;
+    public Transform water;
     private Vector2 velocity;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    private bool isShotingWater = false;
+    private Rigidbody2D rb;
 
     void FixedUpdate()
     {
-        if (velocity != Vector2.zero)
+        rb.velocity = velocity * moveSpeed;
+    }
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    private IEnumerator ShotWaterRoutine()
+    {
+        while (isShotingWater)
         {
-            transform.Translate(velocity * Time.deltaTime * moveSpeed);
+            ShotWater();
+            yield return new WaitForSeconds(waterDelay);
         }
+        yield return null;
+    }
+
+    public void ShotWater()
+    {
+        Transform drop = Instantiate(water, waterOrigin.transform.position, Quaternion.identity);
+        drop.GetComponent<Water>().SetVelocity(crossHair.GetCrosshaiPosition() - transform.position);
     }
 
     public void SetDirection(Vector2 direction)
@@ -34,8 +46,18 @@ public class PlayerController : MonoBehaviour
         velocity = direction;
     }
 
+    public void SetWaterState(bool state)
+    {
+        isShotingWater = state;
+        if (isShotingWater)
+        {
+            StartCoroutine("ShotWaterRoutine");
+        }
+    }
+
     public void SetCrosshairPosition(Vector2 direction)
     {
         crossHair.SetPosition(direction);
+        waterOrigin.SetPosition(direction);
     }
 }

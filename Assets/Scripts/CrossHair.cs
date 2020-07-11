@@ -11,10 +11,16 @@ public class CrossHair : MonoBehaviour
     public Transform parent;
     private Vector3 cursorPosition;
 
+
     private void Update()
     {
         UpdateCrosshair();
         transform.position = newPosition;
+    }
+
+    public Vector3 GetCrosshaiPosition()
+    {
+        return newPosition;
     }
 
     private void UpdateCrosshair()
@@ -22,7 +28,6 @@ public class CrossHair : MonoBehaviour
         Vector3 diff = cam.ScreenToWorldPoint(cursorPosition) - parent.position;
         diff.z = parent.position.z;
         Vector3 position = Vector3.Normalize(diff);
-        Debug.Log(position);
         newPosition = parent.position + new Vector3(position.x * distance, position.y * distance, 0f);
     }
 

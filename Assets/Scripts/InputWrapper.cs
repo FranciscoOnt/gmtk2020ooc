@@ -18,10 +18,10 @@ public class InputWrapper : MonoBehaviour
         controller.SetDirection(c.ReadValue<Vector2>());
     }
 
-    public void UpdateJumpInput(InputAction.CallbackContext c)
+    public void UpdateMouseLClick(InputAction.CallbackContext c)
     {
-        // if (c.started) playerController.UpdateJumpInput(true);
-        // else if (c.canceled) playerController.UpdateJumpInput(false);
+        if (c.started) controller.SetWaterState(true);
+        else if (c.canceled) controller.SetWaterState(false);
     }
 
     public void UpdateCrosshairPosition(InputAction.CallbackContext c)
