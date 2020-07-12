@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip watersfx;
 
     private Transform axeAttack;
+    private GameCamera cam;
 
     void FixedUpdate()
     {
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        cam = GameObject.FindObjectOfType<GameCamera>();
     }
 
     private IEnumerator ShotWaterRoutine()
@@ -169,6 +171,8 @@ public class PlayerController : MonoBehaviour
 
     public void Damage()
     {
+        if (cam)
+            cam.Shake();
         life--;
         if (life <= 0f && !dead)
         {

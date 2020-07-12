@@ -25,6 +25,8 @@ public class Tree : MonoBehaviour
     public AudioSource SFX;
     public AudioClip hitsfx;
     public AudioClip steamsfx;
+
+    private GameCamera cam;
     // Start is called before the first frame update
 
     private void Awake()
@@ -34,6 +36,7 @@ public class Tree : MonoBehaviour
         if (randomizeLife)
             life = Random.Range(liferange.x, liferange.y);
         anim.enabled = false;
+        cam = GameObject.FindObjectOfType<GameCamera>();
     }
 
     void Start()
@@ -148,6 +151,8 @@ public class Tree : MonoBehaviour
         }
         if (life > 10f)
         {
+            if (cam)
+                cam.Shake();
             Transform t = Instantiate(waterText, transform.position, Quaternion.identity);
             p.getWater(-10f);
         }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class TombStone : MonoBehaviour
 {
     public Transform zombi;
+    public bool startOnFire = false;
     public Vector2 timetoSpawn;
     private float spawnTime;
     // Start is called before the first frame update
@@ -27,6 +28,8 @@ public class TombStone : MonoBehaviour
     private void SpawnZombi()
     {
         Transform z = Instantiate(zombi, transform.position, Quaternion.identity);
+        if(startOnFire)
+            z.SendMessage("Ignite", SendMessageOptions.DontRequireReceiver);
     }
 
     private void recalcTImer()
