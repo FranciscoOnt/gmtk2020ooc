@@ -46,7 +46,12 @@ MonoBehaviour:
   fireLabel: {fileID: 0}
   needLabel: {fileID: 0}
   zombieLabel: {fileID: 0}
-  RequiredTrees: 0
+  saveLabel: {fileID: 0}
+  MIssinBriefPanel: {fileID: 0}
+  FailurePanel: {fileID: 0}
+  VictoryPanel: {fileID: 0}
+  reasonText: {fileID: 0}
+  RequiredTrees: 1
   liveTrees: 0
   burningTrees: 0
   zombies: 0

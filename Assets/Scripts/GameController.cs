@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
 
     public GameObject MIssinBriefPanel;
     public GameObject FailurePanel;
+    public GameObject VictoryPanel;
     public Text reasonText;
     public int RequiredTrees = 0;
     public int liveTrees = 0;
@@ -31,6 +32,7 @@ public class GameController : MonoBehaviour
         saveLabel.text = $"Save at Least {RequiredTrees} trees";
         Time.timeScale = 0f;
         FailurePanel.SetActive(false);
+        VictoryPanel.SetActive(false);
     }
 
     public void StartLevel()
@@ -54,7 +56,8 @@ public class GameController : MonoBehaviour
     {
         if (zombies == 0 && burningTrees <= 0 && RequiredTrees <= liveTrees)
         {
-            Debug.Log("WON!");
+            Time.timeScale = 0f;
+            VictoryPanel.SetActive(true);
         }
         else if (RequiredTrees > liveTrees || !player)
         {
