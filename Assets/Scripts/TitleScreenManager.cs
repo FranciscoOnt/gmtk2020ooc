@@ -39,4 +39,8 @@ public class TitleScreenManager : MonoBehaviour
         SceneManager.LoadScene($"stage{level.ToString()}");
     }
 
+    public void Quit(){
+        Application.Quit();
+    }
+
 }
