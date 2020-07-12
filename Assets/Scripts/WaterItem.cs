@@ -15,9 +15,9 @@ public class WaterItem : MonoBehaviour
         amount = Random.Range(amountRange.x, amountRange.y);
         if (amount < 15f)
             r.sprite = sprites[0];
-        if (amount >= 15f && amount < 35f)
+        if (amount >= 15f && amount < 25f)
             r.sprite = sprites[1];
-        if (amount >= 35f)
+        if (amount >= 25f)
             r.sprite = sprites[2];
     }
 

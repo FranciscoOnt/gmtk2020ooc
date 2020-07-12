@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 velocity;
     private bool isShotingWater = false;
     private Rigidbody2D rb;
-    private float waterTank = 100f;
+    public float waterTank = 100f;
     public int life = 5;
     public float flinchDelay = .5f;
     public float flinchMultiply = 5f;
@@ -23,18 +23,23 @@ public class PlayerController : MonoBehaviour
     private bool attacking = false;
     public Animator anim;
     public Transform spriteBody;
+    public bool dead = false;
 
     private Transform axeAttack;
 
     void FixedUpdate()
     {
+        if (dead)
+            return;
         if (!flinching)
         {
-            if (attacking) {
+            if (attacking)
+            {
                 rb.velocity = Vector3.zero;
                 anim.SetBool("Walking", false);
             }
-            else{
+            else
+            {
                 rb.velocity = velocity * moveSpeed;
                 anim.SetBool("Walking", velocity == Vector2.zero);
             }
@@ -51,15 +56,9 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void OnGUI()
-    {
-        GUI.Label(new Rect(510, 10, 150, 20), "Water: " + waterTank.ToString());
-        GUI.Label(new Rect(510, 25, 150, 20), "Life: " + life.ToString());
-    }
-
     private IEnumerator ShotWaterRoutine()
     {
-        while (isShotingWater)
+        while (isShotingWater && !dead)
         {
             ShotWater();
             yield return new WaitForSeconds(waterDelay);
@@ -85,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
     public void AxeAttack()
     {
-        if (attacking)
+        if (attacking || dead)
             return;
         attacking = true;
         axeAttack = Instantiate(axe, transform.position, Quaternion.identity);
@@ -123,6 +122,8 @@ public class PlayerController : MonoBehaviour
 
     public void SetCrosshairPosition(Vector2 direction)
     {
+        if (dead)
+            return;
         crossHair.SetPosition(direction);
         waterOrigin.SetPosition(direction);
     }
@@ -138,6 +139,12 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine("Flinch", flinchdir);
             }
         }
+        if (other.transform.CompareTag("Zombi"))
+        {
+            Damage();
+            Vector3 flinchdir = Vector3.Normalize((Vector2)transform.position - (Vector2)other.transform.position);
+            StartCoroutine("Flinch", flinchdir);
+        }
     }
 
 
@@ -152,6 +159,22 @@ public class PlayerController : MonoBehaviour
     public void Damage()
     {
         life--;
+        if (life <= 0f)
+        {
+            StartCoroutine("Die");
+        }
+    }
+
+    private IEnumerator Die()
+    {
+        Collider2D c = GetComponent<BoxCollider2D>();
+        c.enabled = false;
+        dead = true;
+        anim.SetBool("dead", true);
+        Destroy(crossHair.gameObject);
+        Destroy(waterOrigin.gameObject);
+        yield return new WaitForSeconds(.3f);
+        Destroy(gameObject);
     }
 
     // Credits to Kastenessen from https://answers.unity.com/questions/1350050/how-do-i-rotate-a-2d-object-to-face-another-object.html

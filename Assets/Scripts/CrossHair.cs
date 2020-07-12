@@ -28,7 +28,7 @@ public class CrossHair : MonoBehaviour
         Vector3 diff = cam.ScreenToWorldPoint(cursorPosition) - parent.position;
         diff.z = parent.position.z;
         Vector3 position = Vector3.Normalize(diff);
-        newPosition = parent.position + new Vector3(position.x * distance, position.y * distance, 0f);
+        newPosition = parent.position + new Vector3(position.x * distance, position.y * distance, -1f);
     }
 
     public void SetPosition(Vector3 direction)

@@ -27,10 +27,14 @@ public class Zombi : MonoBehaviour
     private bool dead = false;
     public Transform waterDrop;
     public Transform spriteBody;
+    private BoxCollider2D boxCollider;
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        GameObject obj = GameObject.FindGameObjectWithTag("Player");
+        if (obj)
+            player = obj.transform;
+        boxCollider = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         maxLife = Random.Range(lifeRange.x, lifeRange.y);
         life = maxLife;
@@ -73,7 +77,9 @@ public class Zombi : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 direction = Vector3.Normalize(player.position - transform.position);
+        Vector3 direction = new Vector3();
+        if (player)
+            direction = Vector3.Normalize(player.position - transform.position);
         if (flinching || dead)
             direction = Vector3.zero;
         rb.velocity = direction * walkingSpeed;
@@ -155,6 +161,7 @@ public class Zombi : MonoBehaviour
         if (dead)
             return;
         dead = true;
+        boxCollider.enabled = false;
         spriteBody.gameObject.SetActive(false);
         flinching = true;
         bleedEffect.Play();

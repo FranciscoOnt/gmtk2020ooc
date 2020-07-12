@@ -45,7 +45,12 @@ public class Water : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.transform.CompareTag("Tree"))
+        if (other.transform.CompareTag("Stone"))
+        {
+            Splash();
+        }
+
+         if (other.transform.CompareTag("Tree"))
         {
             other.transform.GetComponent<Tree>().Water();
             Splash();
