@@ -64,6 +64,12 @@ public class Tree : MonoBehaviour
         if (burning && life > 0f)
             life -= Time.deltaTime;
 
+        if (life <= 0f)
+        {
+            burning = false;
+            fireRate = 0f;
+        }
+
         UpdateSprite();
 
         var emission = fireEfect.emission;
@@ -72,7 +78,7 @@ public class Tree : MonoBehaviour
 
     public void Ignite()
     {
-        if (burning)
+        if (burning || life <= 0f)
             return;
         burning = true;
         burnRate = Random.Range(burnRateRange.x, burnRateRange.y);

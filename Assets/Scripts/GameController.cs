@@ -45,6 +45,11 @@ public class GameController : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void LoadLevel(string name)
+    {
+        SceneManager.LoadScene(name);
+    }
     // Start is called before the first frame update
     void Start()
     {
