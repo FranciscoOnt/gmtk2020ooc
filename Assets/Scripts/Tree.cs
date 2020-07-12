@@ -21,6 +21,10 @@ public class Tree : MonoBehaviour
     public Vector2 liferange;
     private Animator anim;
     public Transform waterText;
+
+    public AudioSource SFX;
+    public AudioClip hitsfx;
+    public AudioClip steamsfx;
     // Start is called before the first frame update
 
     private void Awake()
@@ -93,6 +97,8 @@ public class Tree : MonoBehaviour
         }
         else if (fireRate <= 0 && burning)
         {
+            SFX.clip = steamsfx;
+            SFX.Play();
             burning = false;
         }
     }
@@ -124,6 +130,8 @@ public class Tree : MonoBehaviour
 
     public void AxeHit()
     {
+        SFX.clip = hitsfx;
+        SFX.Play();
         PlayerController p = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         if (burning)
         {

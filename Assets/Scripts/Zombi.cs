@@ -29,6 +29,8 @@ public class Zombi : MonoBehaviour
     public Transform spriteBody;
     private BoxCollider2D boxCollider;
 
+    public AudioSource SFX;
+
     private void Awake()
     {
         GameObject obj = GameObject.FindGameObjectWithTag("Player");
@@ -98,6 +100,11 @@ public class Zombi : MonoBehaviour
             {
                 Ignite();
             }
+
+            if (!t.burning && burning)
+            {
+                t.Ignite();
+            }
         }
     }
 
@@ -109,6 +116,11 @@ public class Zombi : MonoBehaviour
             if (t.burning)
             {
                 Ignite();
+            }
+
+            if (!t.burning && burning)
+            {
+                t.Ignite();
             }
         }
     }
@@ -140,6 +152,7 @@ public class Zombi : MonoBehaviour
     public void AxeHit()
     {
         StartCoroutine("Flinch");
+        SFX.Play();
         life -= axePower;
         if (life <= 0f)
             Death();

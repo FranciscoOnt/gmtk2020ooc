@@ -25,6 +25,11 @@ public class PlayerController : MonoBehaviour
     public Transform spriteBody;
     public bool dead = false;
 
+    public AudioSource SFX;
+    public AudioClip hitsfx;
+    public AudioClip deadsfx;
+    public AudioClip watersfx;
+
     private Transform axeAttack;
 
     void FixedUpdate()
@@ -104,6 +109,12 @@ public class PlayerController : MonoBehaviour
         waterTank += amount;
         if (waterTank > 100f)
             waterTank = 100f;
+
+        if (amount > 0f)
+        {
+            SFX.clip = watersfx;
+            SFX.Play();
+        }
     }
 
     public void SetDirection(Vector2 direction)
@@ -162,11 +173,17 @@ public class PlayerController : MonoBehaviour
         if (life <= 0f)
         {
             StartCoroutine("Die");
+            return;
         }
+
+        SFX.clip = hitsfx;
+        SFX.Play();
     }
 
     private IEnumerator Die()
     {
+        SFX.clip = deadsfx;
+        SFX.Play();
         Collider2D c = GetComponent<BoxCollider2D>();
         c.enabled = false;
         dead = true;
