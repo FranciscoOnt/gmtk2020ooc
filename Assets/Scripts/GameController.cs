@@ -10,6 +10,12 @@ public class GameController : MonoBehaviour
     public Text fireLabel;
     public Text needLabel;
     public Text zombieLabel;
+
+    public Text saveLabel;
+
+    public GameObject MIssinBriefPanel;
+    public GameObject FailurePanel;
+    public Text reasonText;
     public int RequiredTrees = 0;
     public int liveTrees = 0;
     public int burningTrees = 0;
@@ -22,6 +28,20 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        saveLabel.text = $"Save at Least {RequiredTrees} trees";
+        Time.timeScale = 0f;
+        FailurePanel.SetActive(false);
+    }
+
+    public void StartLevel()
+    {
+        MIssinBriefPanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void Retry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     // Start is called before the first frame update
     void Start()
@@ -32,11 +52,15 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (zombies == 0 && burningTrees <= 0 && RequiredTrees <= liveTrees) {
+        if (zombies == 0 && burningTrees <= 0 && RequiredTrees <= liveTrees)
+        {
             Debug.Log("WON!");
         }
-        else if (RequiredTrees > liveTrees || player.dead) {
-            Debug.Log("Lost");
+        else if (RequiredTrees > liveTrees || !player)
+        {
+            reasonText.text = player.dead ? "You died!" : "You couldn't save the trees!";
+            Time.timeScale = 0f;
+            FailurePanel.SetActive(true);
         }
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tree : MonoBehaviour
 {
+    public bool randomizeLife = true;
     public float fireRate = 100f;
     public bool burning = true;
     public ParticleSystem fireEfect;
@@ -26,7 +27,8 @@ public class Tree : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rend = GetComponent<SpriteRenderer>();
-        life = Random.Range(liferange.x, liferange.y);
+        if (randomizeLife)
+            life = Random.Range(liferange.x, liferange.y);
         anim.enabled = false;
     }
 
@@ -49,9 +51,9 @@ public class Tree : MonoBehaviour
 
         }
 
-        if (burning && fireRate % 25f == 0f)
+        if (burning && fireRate > 1f && fireRate % 25 < 0.01f)
         {
-            Collider2D[] burnarea = Physics2D.OverlapCircleAll(transform.position, 3f);
+            Collider2D[] burnarea = Physics2D.OverlapCircleAll(transform.position, 1.2f);
             foreach (Collider2D c in burnarea)
             {
                 if (c.transform != transform)
@@ -130,7 +132,8 @@ public class Tree : MonoBehaviour
             p.StartCoroutine("Flinch", flinchdir);
             p.Damage();
         }
-        if (life > 10f){
+        if (life > 10f)
+        {
             Transform t = Instantiate(waterText, transform.position, Quaternion.identity);
             p.getWater(-10f);
         }

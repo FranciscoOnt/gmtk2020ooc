@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WaterItem : MonoBehaviour
 {
+    public bool randomize = true;
     public float amount = 5f;
     public Vector2 amountRange;
     public Sprite[] sprites = new Sprite[3];
@@ -12,7 +13,8 @@ public class WaterItem : MonoBehaviour
     private void Awake()
     {
         r = GetComponent<SpriteRenderer>();
-        amount = Random.Range(amountRange.x, amountRange.y);
+        if (randomize)
+            amount = Random.Range(amountRange.x, amountRange.y);
         if (amount < 15f)
             r.sprite = sprites[0];
         if (amount >= 15f && amount < 25f)

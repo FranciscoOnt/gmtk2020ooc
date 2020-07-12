@@ -100,7 +100,7 @@ MonoBehaviour:
   fireEfect: {fileID: 199890344888841756}
   burstEffect: {fileID: 8388564130239921621}
   burnRate: 1
-  burnRateRange: {x: 0.8, y: 5}
+  burnRateRange: {x: 2, y: 6}
   igniteRateRange: {x: 25, y: 40}
   burnMax: 149
   sprites:
@@ -109,7 +109,9 @@ MonoBehaviour:
   - {fileID: -5239775021809284771, guid: 4844c1060f99b814bbf737987a3e7781, type: 3}
   - {fileID: -3940168754389721935, guid: 4844c1060f99b814bbf737987a3e7781, type: 3}
   - {fileID: -7984249261431051978, guid: 4844c1060f99b814bbf737987a3e7781, type: 3}
+  life: 1
   liferange: {x: 8, y: 21}
+  waterText: {fileID: 0}
 --- !u!212 &3222972580027039587
 SpriteRenderer:
   m_ObjectHideFlags: 0
