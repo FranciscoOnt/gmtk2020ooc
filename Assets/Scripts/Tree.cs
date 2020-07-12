@@ -136,7 +136,7 @@ public class Tree : MonoBehaviour
         if (burning)
         {
             burstEffect.Play();
-            Collider2D[] burnarea = Physics2D.OverlapCircleAll(transform.position, 3f);
+            Collider2D[] burnarea = Physics2D.OverlapCircleAll(transform.position, 1.5f);
             foreach (Collider2D c in burnarea)
             {
                 if (c.transform != transform)

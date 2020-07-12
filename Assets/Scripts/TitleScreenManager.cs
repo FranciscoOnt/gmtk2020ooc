@@ -9,21 +9,34 @@ public class TitleScreenManager : MonoBehaviour
     public GameObject stageSelect;
     public GameObject howtoPlay;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
+    private void Start() {
+        BacktoMain();   
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BacktoMain()
     {
+        mainMenu.SetActive(true);
+        stageSelect.SetActive(false);
+        howtoPlay.SetActive(false);
+    }
 
+    public void Stageselect()
+    {
+        mainMenu.SetActive(false);
+        stageSelect.SetActive(true);
+        howtoPlay.SetActive(false);
+    }
+
+    public void howtoPlaymenu()
+    {
+        mainMenu.SetActive(false);
+        stageSelect.SetActive(false);
+        howtoPlay.SetActive(true);
     }
 
     public void LoadLevel(int level)
     {
         SceneManager.LoadScene($"stage{level.ToString()}");
-    } 
+    }
 
 }

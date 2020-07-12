@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
     public void SetWaterState(bool state)
     {
         isShotingWater = state;
-        if (isShotingWater)
+        if (isShotingWater && Time.timeScale != 0f)
         {
             StartCoroutine("ShotWaterRoutine");
         }
@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
     public void Damage()
     {
         life--;
-        if (life <= 0f)
+        if (life <= 0f && !dead)
         {
             StartCoroutine("Die");
             return;
@@ -188,8 +188,10 @@ public class PlayerController : MonoBehaviour
         c.enabled = false;
         dead = true;
         anim.SetBool("dead", true);
-        Destroy(crossHair.gameObject);
-        Destroy(waterOrigin.gameObject);
+        if (crossHair)
+            Destroy(crossHair.gameObject);
+        if (waterOrigin)
+            Destroy(waterOrigin.gameObject);
         yield return new WaitForSeconds(.3f);
         Destroy(gameObject);
     }

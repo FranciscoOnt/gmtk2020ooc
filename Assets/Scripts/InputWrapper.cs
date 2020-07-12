@@ -7,10 +7,12 @@ public class InputWrapper : MonoBehaviour
 {
 
     PlayerController controller;
+    GameController gcon;
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
+        gcon = FindObjectOfType<GameController>();
     }
 
     public void UpdateMovementInput(InputAction.CallbackContext c)
@@ -27,6 +29,11 @@ public class InputWrapper : MonoBehaviour
     public void UpdateMouseRClick(InputAction.CallbackContext c)
     {
         if (c.started) controller.AxeAttack();
+    }
+
+    public void UpdateEccKey(InputAction.CallbackContext c)
+    {
+        if (c.started) gcon.Pause();
     }
 
     public void UpdateCrosshairPosition(InputAction.CallbackContext c)

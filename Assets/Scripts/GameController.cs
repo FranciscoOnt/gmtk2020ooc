@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
     public GameObject MIssinBriefPanel;
     public GameObject FailurePanel;
     public GameObject VictoryPanel;
+    public GameObject PausePanel;
     public Text reasonText;
     public int RequiredTrees = 0;
     public int liveTrees = 0;
@@ -33,6 +34,7 @@ public class GameController : MonoBehaviour
         Time.timeScale = 0f;
         FailurePanel.SetActive(false);
         VictoryPanel.SetActive(false);
+        PausePanel.SetActive(false);
     }
 
     public void StartLevel()
@@ -40,6 +42,32 @@ public class GameController : MonoBehaviour
         MIssinBriefPanel.SetActive(false);
         Time.timeScale = 1f;
     }
+
+    public void Pause()
+    {
+        if (Time.timeScale == 0f)
+            return;
+        Time.timeScale = 0f;
+        PausePanel.SetActive(true);
+    }
+
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        PausePanel.SetActive(false);
+    }
+
+    public void ToTitle()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+
 
     public void Retry()
     {
